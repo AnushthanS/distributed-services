@@ -1,5 +1,6 @@
 const prisma = require('../prisma/prisma');
 const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2000';
+const axios = require("axios");
 
 const getAllOrders = async(req, res) =>{
     try{
@@ -28,10 +29,10 @@ const getOrderById = async(req, res) => {
 
 const createOrder = async(req, res) => {
     try{
-        const { orderId, orderItems } = req.body;
+        const { userId, orderItems } = req.body;
 
         for(const item of orderItems){
-            const { data: stockInfo } = await productServiceClient.get(`/products/${item.productId}/stock`);
+            const { data: stockInfo } = await axios.get(`${productServiceUrl}/products/${item.productId}/stock`);
 
             if(!stockInfo.inStock || stockInfo.stockQuantity < item.quantity){
                 return res.status(400).json({ error: `Insufficient stock for product ${stockInfo.name}` });
