@@ -3,6 +3,8 @@ const inventoryServiceUrl = process.env.INVENTORY_SERVICE_URL || 'http://localho
 const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2000';
 const axios = require("axios");
 
+const { getToken } = require('../utils/auth');
+
 const getAllOrders = async (req, res) => {
     try {
         const orders = await prisma.order.findMany({
@@ -30,11 +32,14 @@ const getOrderById = async (req, res) => {
 const createOrder = async (req, res) => {
     try {
         const { userId, orderItems } = req.body;
+        const token = getToken();
 
         for (const item of orderItems) {
             const { data: stockInfo } = await axios.post(`${inventoryServiceUrl}/inventory`, {
                 id: item.productId,
                 requiredQuantity: item.quantity
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             if (!stockInfo.inStock || !stockInfo.canOrder) {
@@ -44,7 +49,11 @@ const createOrder = async (req, res) => {
 
         let totalAmount = 0;
         for (const item of orderItems) {
-            const { data: product } = await axios.get(`${productServiceUrl}/products/${item.productId}`);
+            const { data: product } = await axios.get(`${productServiceUrl}/products/${item.productId}`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             totalAmount += product.price * item.quantity;
         }
 
@@ -67,6 +76,10 @@ const createOrder = async (req, res) => {
         for (const item of orderItems) {
             await axios.put(`${inventoryServiceUrl}/inventory/${item.productId}`, {
                 quantity: item.quantity
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
         }
 

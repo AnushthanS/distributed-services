@@ -37,7 +37,6 @@ app.put("/products/:id", updateProduct);
 app.delete("/products/:id", deleteProduct);
 app.get("/health", healthCheck);
 
-app.use(errorHandler);
 
 if(require.main === module){
     app.listen(port, () => {

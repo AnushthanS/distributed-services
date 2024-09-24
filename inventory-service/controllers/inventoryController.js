@@ -1,10 +1,16 @@
 const axios = require("axios");
 
 const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2000';
+const { getToken } = require("../utils/auth");
 
 const healthCheck = async(req, res) => {
     try{
-        const {data: status} =  await axios.get(`${productServiceUrl}/health`);
+        const token = getToken();
+        const {data: status} =  await axios.get(`${productServiceUrl}/health`, null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         res.status(200).json(status);
     } catch(err){
         res.status(500).json({
@@ -17,8 +23,10 @@ const healthCheck = async(req, res) => {
 const inventoryCheck = async(req, res) => {
     try{
         const {id, requiredQuantity} = req.body;
-
-        const { data: product } = await axios.get(`${productServiceUrl}/products/${id}`);
+        const token = getToken();
+        const { data: product } = await axios.get(`${productServiceUrl}/products/${id}`, null, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
 
         if(!product) return res.status(404).json({
             error: "Product not found!"
@@ -40,11 +48,14 @@ const inventoryChange = async(req, res) => {
     try{
         const id = parseInt(req.params.id);
         const {quantity} = req.body;
+        const token = getToken();
 
         await axios.put(`${productServiceUrl}/products/${id}`, {
             stockQuantity: {
                 decrement: quantity
             }
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
         });
 
         res.status(201).json({
