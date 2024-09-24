@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "AuthRegister",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

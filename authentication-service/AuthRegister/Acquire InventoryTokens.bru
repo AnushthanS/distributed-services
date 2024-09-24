@@ -1,0 +1,18 @@
+meta {
+  name: Acquire InventoryTokens
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:2020/auth/token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "serviceId": "3",
+    "secret": "inventory-secret"
+  }
+}

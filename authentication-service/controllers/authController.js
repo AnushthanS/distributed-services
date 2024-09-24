@@ -38,7 +38,7 @@ const registerService = async (req, res) => {
         return res.status(500).json(
             {
                 status: "ERROR",
-                message: res.err.message ? res.err.message : err.message
+                message: err.message
             }
         );
     }

@@ -30,7 +30,7 @@ const getOrderById = async (req, res) => {
     }
 };
 
-const createOrder = [authenticateService, async (req, res) => {
+const createOrder =  [authenticateService, async (req, res) => {
     try {
         const { userId, orderItems } = req.body;
         const token = getToken();

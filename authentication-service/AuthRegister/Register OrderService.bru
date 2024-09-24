@@ -1,0 +1,18 @@
+meta {
+  name: Register OrderService
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:2020/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "serviceId": "2",
+    "secret": "order-secret"
+  }
+}
