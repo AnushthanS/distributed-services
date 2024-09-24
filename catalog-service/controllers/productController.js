@@ -67,26 +67,6 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-const stockCheck = async(req, res) => {
-    try{
-        const product = await prisma.product.findUnique({
-            where: { id: parseInt(req.params.id) },
-            select: { id: true, name: true, stockQuantity: true },
-        });
-
-        if(!product) return res.status(404).json({ error: "Product not found" });
-
-        res.json({
-            id: product.id,
-            name: product.name,
-            inStock: product.stockQuantity > 0,
-            stockQuantity: product.stockQuantity
-        });
-    } catch(error){
-        res.status(500).json({ error: "Error checking stock"} );
-    }
-};
-
 const healthCheck = async (req, res) => {
     try{
         await prisma.$queryRaw`SELECT 1;`;
@@ -102,6 +82,5 @@ module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
-    stockCheck,
     healthCheck
 };

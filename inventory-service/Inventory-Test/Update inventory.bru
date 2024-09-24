@@ -1,0 +1,17 @@
+meta {
+  name: Update inventory
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:2002/inventory/6
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "quantity": 10
+  }
+}

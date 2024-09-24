@@ -3,7 +3,9 @@ const cors = require("cors");
 require("dotenv").config();
 
 const {
-    healthCheck
+    healthCheck,
+    inventoryCheck,
+    inventoryChange
 } = require("./controllers/inventoryController");
 
 const app = express();
@@ -19,6 +21,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", healthCheck);
+app.post("/inventory", inventoryCheck);
+app.put("/inventory/:id", inventoryChange);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

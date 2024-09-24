@@ -8,7 +8,6 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-    stockCheck,
     healthCheck
 } = require("./controllers/productController");
 
@@ -28,7 +27,6 @@ app.get("/products", getAllProducts);
 app.get("/products/:id", getProductById);
 app.post("/products", createProduct);
 app.put("/products/:id", updateProduct);
-app.get("/products/:id/stock", stockCheck);
 app.delete("/products/:id", deleteProduct);
 app.get("/health", healthCheck);
 
