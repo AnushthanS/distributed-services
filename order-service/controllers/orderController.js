@@ -4,6 +4,7 @@ const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2
 const axios = require("axios");
 
 const { getToken } = require('../utils/auth');
+const authenticateService = require('../middleware/auth');
 
 const getAllOrders = async (req, res) => {
     try {
@@ -29,7 +30,7 @@ const getOrderById = async (req, res) => {
     }
 };
 
-const createOrder = async (req, res) => {
+const createOrder = [authenticateService, async (req, res) => {
     try {
         const { userId, orderItems } = req.body;
         const token = getToken();
@@ -88,7 +89,7 @@ const createOrder = async (req, res) => {
         console.error("Error creating order: ", error.response ? error.response.data : error.message);
         res.status(500).json({ error: "Error creating order", details: error.response ? error.response.data : error.message });
     }
-};
+}];
 
 const updateOrder = async (req, res) => {
     try {

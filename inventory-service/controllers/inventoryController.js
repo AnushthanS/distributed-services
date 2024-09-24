@@ -2,8 +2,9 @@ const axios = require("axios");
 
 const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2000';
 const { getToken } = require("../utils/auth");
+const authenticateService = require("../middleware/auth");
 
-const healthCheck = async(req, res) => {
+const healthCheck = [authenticateService, async(req, res) => {
     try{
         const token = getToken();
         const {data: status} =  await axios.get(`${productServiceUrl}/health`, null, {
@@ -18,9 +19,9 @@ const healthCheck = async(req, res) => {
             message: err.message
         });
     }
-}
+}]
 
-const inventoryCheck = async(req, res) => {
+const inventoryCheck = [authenticateService, async(req, res) => {
     try{
         const {id, requiredQuantity} = req.body;
         const token = getToken();
@@ -42,9 +43,9 @@ const inventoryCheck = async(req, res) => {
             error: err.message
         });
     }
-}
+}]
 
-const inventoryChange = async(req, res) => {
+const inventoryChange = [authenticateService, async(req, res) => {
     try{
         const id = parseInt(req.params.id);
         const {quantity} = req.body;
@@ -66,7 +67,7 @@ const inventoryChange = async(req, res) => {
             error: err.message
         });
     }
-}
+}]
 
 
 module.exports = {

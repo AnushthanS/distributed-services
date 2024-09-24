@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const prisma = require("./prisma/prisma");
 
-const { errorHandler } = require("./middleware/error");
+const errorHandler = require("./middleware/error");
 
 const {
     registerService,
