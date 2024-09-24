@@ -8,9 +8,9 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "@AnushthanS",
   "license": "ISC",
-  "description": "",
+  "description": "Order microservice demo",
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "axios": "^1.7.7",
