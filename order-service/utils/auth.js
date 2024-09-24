@@ -15,7 +15,8 @@ async function getToken() {
             serviceId: serviceId,
             secret: serviceSecret
         });
-        tokenCache = response.data.token;
+        console.log("Token generated: ", response.data);
+        tokenCache = response.data.accessToken;
         console.log("Token fetched: ", tokenCache);
         return tokenCache;
     } catch(err){

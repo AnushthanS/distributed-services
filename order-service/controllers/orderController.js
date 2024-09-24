@@ -33,7 +33,7 @@ const getOrderById = async (req, res) => {
 const createOrder =  [authenticateService, async (req, res) => {
     try {
         const { userId, orderItems } = req.body;
-        const token = getToken();
+        const token = await getToken();
 
         for (const item of orderItems) {
             const { data: stockInfo } = await axios.post(`${inventoryServiceUrl}/inventory`, {
