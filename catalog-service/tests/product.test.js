@@ -72,7 +72,7 @@ describe('Product Catalog Service', () => {
 
     test('DELETE /products/:id - Delete Product', async() => {
         const res = request(app).delete(`/products/${createProductId}`);
-
+        console.log(`/products/${createProductId}`);
         expect(res.statusCode).toBe(204);
     });
 });

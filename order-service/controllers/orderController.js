@@ -1,4 +1,5 @@
 const prisma = require('../prisma/prisma');
+
 const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2000';
 const axios = require("axios");
 
@@ -16,10 +17,9 @@ const getAllOrders = async(req, res) =>{
 const getOrderById = async(req, res) => {
     try{
         const order = await prisma.order.findUnique({
-            where: { id: req.params.id },
+            where: { id: parseInt(req.params.id) },
             include: { orderItems: true }
         });
-    
         if(order) res.json(order);
         else res.status(404).json({ error: "Order not found" });
     } catch(error){
@@ -79,8 +79,9 @@ const createOrder = async(req, res) => {
 const updateOrder = async(req, res) => {
     try{
         const { status } = req.body;
+        
         const updatedOrder = await prisma.order.update({
-            where: { id: req.params.id },
+            where: { id: parseInt(req.params.id) },
             data: { status },
             include: { orderItems: true }
         });

@@ -1,6 +1,7 @@
-const express = require("express");
+const express =  require("express");
 const cors = require("cors");
 require("dotenv").config();
+
 const {
     getAllProducts,
     getProductById,
@@ -27,8 +28,8 @@ app.get("/products", getAllProducts);
 app.get("/products/:id", getProductById);
 app.post("/products", createProduct);
 app.put("/products/:id", updateProduct);
+app.get("/products/:id/stock", stockCheck);
 app.delete("/products/:id", deleteProduct);
-app.get("/product/:id/stock", stockCheck);
 app.get("/health", healthCheck);
 
 app.use((err, req, res, next) => {
