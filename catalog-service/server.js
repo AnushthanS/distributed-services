@@ -17,6 +17,9 @@ const errorHandler = require("./middleware/error");
 const app = express();
 const port = process.env.PORT || 2000;
 
+
+const redisRouter = require("./router/redisRouter");
+
 app.use(cors());
 app.use(express.json());
 
@@ -27,6 +30,8 @@ app.get("/", (req, res) => {
     message: "Product Catalog Service"
    }); 
 });
+
+app.use('/cache', redisRouter);
 
 app.get("/products", getAllProducts);
 app.get("/products/:id", getProductById);
