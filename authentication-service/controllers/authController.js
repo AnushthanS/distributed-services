@@ -59,21 +59,59 @@ const verifyService = async (req, res) => {
     }
 }
 
-const refreshService = async(req, res) => {
+const refreshAuth = async(req, res) => {
     const { refreshToken } = req.body;
     try{
         const savedToken = await prisma.refreshToken.findUnique(
             {
-                where: { token: refreshToken}
+                where: { token: refreshToken },
+                include: {service: true }
             }
         );
-    } catch(err){
 
+        if(!savedToken || savedToken.expiresAt < new Date()) return res.status(400).json({ error: "Invalid/expired refresh token" });
+
+        const accessToken = generateAccessToken(savedToken.service.id);
+        res.json({ accessToken });
+    } catch(err){
+        res.status(500).json({ status: "error", message: err.message });
+    }
+}
+
+const getTokens = async(req, res) => {
+    const { serviceId, secret } = req.body;
+    try{
+        const service = await prisma.service.findUnique({
+            where: {id: serviceId}
+        });
+
+        if(!service) return res.status(401).json({ message: "Invalid service id" });
+        
+        const isValid = await bcrypt.compare(secret, service.secret);
+        if(!isValid) return res.status(401).json({ message: "Invalid secret" });
+
+        const accessToken = generateAccessToken(service.id);
+        const refreshToken = generateRefreshToken();
+
+        await prisma.refreshToken.create({
+            data: {
+                token: refreshToken,
+                serviceId: service.id,
+                expiresAt: new Date(Date.now() + 7*24*60*60*1000) //7 day timeout
+            },
+        });
+        res.json({
+            accessToken, refreshToken
+        });
+    } catch(err){
+        return res.status(500).json({ status: "Error", message: err.message });
     }
 }
 
 
 module.exports = {
     registerService,
-    verifyService
+    verifyService,
+    refreshAuth,
+    getTokens
 }

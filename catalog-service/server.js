@@ -12,6 +12,8 @@ const {
     healthCheck
 } = require("./controllers/productController");
 
+const errorHandler = require("./middleware/error");
+
 const app = express();
 const port = process.env.PORT || 2000;
 
@@ -31,10 +33,7 @@ app.put("/products/:id", updateProduct);
 app.delete("/products/:id", deleteProduct);
 app.get("/health", healthCheck);
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send("Something broke!");
-});
+app.use(errorHandler);
 
 if(require.main === module){
     app.listen(port, () => {
