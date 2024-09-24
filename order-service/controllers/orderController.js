@@ -1,9 +1,6 @@
 const prisma = require('../prisma/prisma');
-
 const inventoryServiceUrl = process.env.INVENTORY_SERVICE_URL || 'http://localhost:2002';
-
 const productServiceUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:2000';
-
 const axios = require("axios");
 
 const getAllOrders = async (req, res) => {

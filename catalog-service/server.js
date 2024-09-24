@@ -12,13 +12,17 @@ const {
     healthCheck
 } = require("./controllers/productController");
 
-const errorHandler = require("./middleware/error");
+const {errorHandler} = require("./middleware/error");
+const { authenticateService } = require("./middleware/auth");
 
 const app = express();
 const port = process.env.PORT || 2000;
 
 app.use(cors());
 app.use(express.json());
+
+app.use(errorHandler);
+app.use(authenticateService);
 
 app.get("/", (req, res) => {
    res.json({
