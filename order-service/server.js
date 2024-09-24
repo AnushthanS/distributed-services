@@ -9,6 +9,7 @@ const {
     deleteOrder,
     healthCheck
 } = require("./controllers/orderController");
+const prisma = require("./prisma/prisma");
 
 const app = express();
 const port = process.env.PORT || 2001;
@@ -39,5 +40,10 @@ if(require.main === module){
         console.log(`Listening on port ${port}`);
     });
 }
+
+process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+});
 
 module.exports = app;

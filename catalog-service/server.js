@@ -1,6 +1,7 @@
 const express =  require("express");
 const cors = require("cors");
 require("dotenv").config();
+const prisma = require("./prisma/prisma");
 
 const {
     getAllProducts,
@@ -40,5 +41,10 @@ if(require.main === module){
         console.log(`Listening on port ${port}`);
     });
 }
+
+process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+});
 
 module.exports = app;
