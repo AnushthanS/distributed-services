@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:latest
 
 WORKDIR /app
 
@@ -10,6 +10,6 @@ COPY . .
 
 RUN npx prisma generate
 
-EXPOSE 2001
+EXPOSE 2020
 
-CMD ["npm", "start"]
+CMD [ "npm", "start" ]
