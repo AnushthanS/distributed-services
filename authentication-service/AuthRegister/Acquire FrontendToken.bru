@@ -1,0 +1,18 @@
+meta {
+  name: Acquire FrontendToken
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://localhost:2020/auth/token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "serviceId": "4",
+    "secret": "frontend-secret"
+  }
+}
