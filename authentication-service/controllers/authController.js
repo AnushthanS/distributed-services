@@ -69,10 +69,23 @@ const refreshAuth = async(req, res) => {
             }
         );
 
-        if(!savedToken || savedToken.expiresAt < new Date()) return res.status(400).json({ error: "Invalid/expired refresh token" });
+        if(!savedToken || savedToken.expiresAt < new Date()) {
+            await prisma.refreshToken.delete({ where: { token: refreshToken } });
+            return res.status(400).json({ error: "Invalid/expired refresh token" });
+        }
 
         const accessToken = generateAccessToken(savedToken.service.id);
-        res.json({ accessToken });
+        const newRefreshToken = generateRefreshToken();
+
+        await prisma.refreshToken.update({
+            where: { id: savedToken.id },
+            data: {
+                token: newRefreshToken,
+                expiresAt: new Date(Date.now() + 7*24*60*60*1000) // 7 day timeout
+            }
+        });
+
+        res.json({ accessToken, refreshToken: newRefreshToken });
     } catch(err){
         res.status(500).json({ status: "error", message: err.message });
     }
