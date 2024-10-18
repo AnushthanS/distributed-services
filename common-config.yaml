@@ -1,0 +1,18 @@
+metadata:
+  name: common-config
+data:
+  AUTH_SERVICE_URL: "http://authentication-service:2020"
+  CATALOG_SERVICE_URL: "http://catalog-service:2000"
+  ORDER_SERVICE_URL: "http://order-service:2001"
+  INVENTORY_SERVICE_URL: "http://inventory-service:2002"
+  FRONTEND_SERVICE_URL: "http://frontend-service:5173"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: common-secrets
+type: Opaque
+stringData:
+  JWT_SECRET: "your-jwt-secret-here"
+  DATABASE_URL: "postgresql://username:password@postgres-service:5432/your_database"
+  DIRECT_URL: "postgresql://username:password@postgres-service:5432/your_database"

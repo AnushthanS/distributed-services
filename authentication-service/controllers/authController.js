@@ -121,10 +121,19 @@ const getTokens = async(req, res) => {
     }
 }
 
+const healthCheck = async(req, res) => {
+    try{
+        await prisma.$queryRaw`SELECT 1`;
+        res.status(200).json({ status: "OK" });
+    } catch(err){
+        res.status(500).json({ status: "Error", message: err.message });
+    }
+}
 
 module.exports = {
     registerService,
     verifyService,
     refreshAuth,
-    getTokens
+    getTokens,
+    healthCheck
 }

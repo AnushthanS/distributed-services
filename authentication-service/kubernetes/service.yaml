@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentication-service
+  namespace: services
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 2020
+    targetPort: 2020
+  selector:
+    app: authentication-service

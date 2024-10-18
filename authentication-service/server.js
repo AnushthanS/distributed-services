@@ -9,7 +9,8 @@ const {
     registerService,
     verifyService,
     refreshAuth,
-    getTokens
+    getTokens,
+    healthCheck
 } = require("./controllers/authController");
 
 const app = express();
@@ -24,7 +25,7 @@ app.post("/auth/register", registerService);
 app.post("/auth/verify", verifyService);
 app.post("/auth/token", getTokens);
 app.post("/auth/token/refresh", refreshAuth);
-
+app.get("/auth/health", healthCheck);
 if(require.main === module) {
     app.listen(PORT, () => {
         console.log(`Listening on port ${PORT}`);
